@@ -39,7 +39,7 @@ echo ""
 echo -n "Your option: "
 read N
 case $N in
-  1) echo "Password: Pwd@CentOS" ; read -s -n1 -p "Press any key to continue..." ; bash InstallNET.sh --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK -dd '$(echo "1_YyQ4Vvq7e4U8nA0VMdakpJBnxf0ol2W" |xargs -n1 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh'))' ;;
+  1) echo "Password: Pwd@CentOS" ; read -s -n1 -p "Press any key to continue..." ;gdlink '1_YyQ4Vvq7e4U8nA0VMdakpJBnxf0ol2W' |xargs -n1 wget -c -O ./centos-7-image;bash InstallNET.sh --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK -dd 'centos-7-image' ;;
   2) bash InstallNET.sh -c 6.9 -v 64 -a --mirror 'http://mirrors.aliyun.com/centos-vault' --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $SUBNET ;;
   3) bash InstallNET.sh -c 6.9 -v 64 -a --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK ;;
   4) bash InstallNET.sh -d 9 -v 64 -a --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK ;;
