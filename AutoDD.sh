@@ -7,7 +7,7 @@ SUBNET=$(ip -o -f inet addr show | awk '/scope global/{sub(/[^.]+\//,"0/",$4);pr
 value=$(( 0xffffffff ^ ((1 << (32 - $SUBNET)) - 1) ))
 NETMASK="$(( (value >> 24) & 0xff )).$(( (value >> 16) & 0xff )).$(( (value >> 8) & 0xff )).$(( value & 0xff ))"
 yum install -y wget
-wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/InstallNET.sh' && chmod a+x InstallNET.sh
+wget --no-check-certificate -qO InstallNET.sh 'https://github.com/ouyangmland/ddnew/blob/master/DebianNET.sh' && chmod a+x DebianNET.sh
 
 clear
 echo "                                                      "
@@ -38,7 +38,7 @@ echo ""
 echo -n "Your option: "
 read N
 case $N in
-  1) echo "Password: Pwd@CentOS" ; read -s -n1 -p "Press any key to continue..." ;bash InstallNET.sh --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK -dd 'https://image.moeclub.org/GoogleDrive/1_YyQ4Vvq7e4U8nA0VMdakpJBnxf0ol2W' ;;
+  1) echo "Password: Pwd@CentOS" ; read -s -n1 -p "Press any key to continue..." ;bash DebianNET.sh -dd "$(echo "1_YyQ4Vvq7e4U8nA0VMdakpJBnxf0ol2W" |xargs -n1 bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/gdlink.sh'))";;
   2) bash InstallNET.sh -c 6.9 -v 64 -a --mirror 'http://mirrors.aliyun.com/centos-vault' --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $SUBNET ;;
   3) bash InstallNET.sh -c 6.9 -v 64 -a --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK ;;
   4) bash InstallNET.sh -d 9 -v 64 -a --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK ;;
