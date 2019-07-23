@@ -6,8 +6,9 @@ SUBNET=$(ip -o -f inet addr show | awk '/scope global/{sub(/[^.]+\//,"0/",$4);pr
 
 value=$(( 0xffffffff ^ ((1 << (32 - $SUBNET)) - 1) ))
 NETMASK="$(( (value >> 24) & 0xff )).$(( (value >> 16) & 0xff )).$(( (value >> 8) & 0xff )).$(( value & 0xff ))"
-
-wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && chmod a+x InstallNET.sh
+yum install -y wget
+wget --no-check-certificate -qO /usr/local/bin/gdlink 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh' && chmod a+x /usr/local/bin/gdlink
+wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/InstallNET.sh' && chmod a+x InstallNET.sh
 
 clear
 echo "                                                      "
@@ -38,7 +39,7 @@ echo ""
 echo -n "Your option: "
 read N
 case $N in
-  1) echo "Password: Pwd@CentOS" ; read -s -n1 -p "Press any key to continue..." ; bash InstallNET.sh --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK -dd 'https://api.moetools.net/get/centos-7-image' ;;
+  1) echo "Password: Pwd@CentOS" ; read -s -n1 -p "Press any key to continue..." ; bash InstallNET.sh --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK -dd '$(echo "1_YyQ4Vvq7e4U8nA0VMdakpJBnxf0ol2W" |xargs -n1 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh'))' ;;
   2) bash InstallNET.sh -c 6.9 -v 64 -a --mirror 'http://mirrors.aliyun.com/centos-vault' --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $SUBNET ;;
   3) bash InstallNET.sh -c 6.9 -v 64 -a --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK ;;
   4) bash InstallNET.sh -d 9 -v 64 -a --ip-addr $MAINIP --ip-gate $GATEWAYIP --ip-mask $NETMASK ;;
