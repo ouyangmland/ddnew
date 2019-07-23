@@ -1,1 +1,2 @@
 # ddnew
+Password: Pwd@CentOS
