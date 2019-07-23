@@ -7,7 +7,7 @@ SUBNET=$(ip -o -f inet addr show | awk '/scope global/{sub(/[^.]+\//,"0/",$4);pr
 value=$(( 0xffffffff ^ ((1 << (32 - $SUBNET)) - 1) ))
 NETMASK="$(( (value >> 24) & 0xff )).$(( (value >> 16) & 0xff )).$(( (value >> 8) & 0xff )).$(( value & 0xff ))"
 yum install -y wget
-wget --no-check-certificate -qO InstallNET.sh 'https://github.com/ouyangmland/ddnew/blob/master/DebianNET.sh' && chmod a+x DebianNET.sh
+wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/DebianNET.sh' && chmod a+x DebianNET.sh
 
 clear
 echo "                                                      "
