@@ -9,7 +9,7 @@ NETMASK="$(( (value >> 24) & 0xff )).$(( (value >> 16) & 0xff )).$(( (value >> 8
 yum install -y wget
 wget --no-check-certificate -qO /usr/local/bin/gdlink 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh' && chmod a+x /usr/local/bin/gdlink
 wget --no-check-certificate -qO DebianNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/DebianNET.sh' && chmod a+x DebianNET.sh
-wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/DebianNET.sh' && chmod a+x InstallNET.sh
+wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/InstallNET.sh' && chmod a+x InstallNET.sh
 clear
 echo "                                                      "
 echo "######################################################"
