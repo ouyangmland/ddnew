@@ -1,6 +1,5 @@
 #!/bin/sh
-wget --no-check-certificate -qO /usr/local/bin/gdlink 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh' && chmod a+x /usr/local/bin/gdlink
-wget --no-check-certificate -qO DebianNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/DebianNET.sh' && chmod a+x DebianNET.sh
+
 if [[ $EUID -ne 0 ]]; then
     clear
     echo "Error: This script must be run as root!" 1>&2
@@ -35,7 +34,8 @@ function ipCheck() {
   done
   return $isLegal
 }
-
+wget --no-check-certificate -qO /usr/local/bin/gdlink 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh' && chmod a+x /usr/local/bin/gdlink
+wget --no-check-certificate -qO DebianNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/DebianNET.sh' && chmod a+x DebianNET.sh
 function CopyRight() {
   clear
   echo "################################################"
