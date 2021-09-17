@@ -14,9 +14,9 @@ function CopyRight() {
   echo "#  Auto Reinstall Script                               #"
   echo "#                                                      #"
   echo "#  Author: hiCasper                                    #"
-  echo "#  Blog: blog.hicasper.com/post/135.html               #"
+  echo "#  Blog: https://blog.hicasper.com/post/135.html       #"
   echo "#  Feedback: https://github.com/hiCasper/Shell/issues  #"
-  echo "#  Last Modified: 2020-04-30                           #"
+  echo "#  Last Modified: 2021-01-13                           #"
   echo "#                                                      #"
   echo "#  Supported by MoeClub                                #"
   echo "#                                                      #"
@@ -48,7 +48,7 @@ function ipCheck() {
 
 function GetIp() {
   MAINIP=$(ip route get 1 | awk -F 'src ' '{print $2}' | awk '{print $1}')
-  GATEWAYIP=$(ip route | grep default | awk '{print $3}; exit')
+  GATEWAYIP=$(ip route | grep default | awk '{print $3}' | head -1)
   SUBNET=$(ip -o -f inet addr show | awk '/scope global/{sub(/[^.]+\//,"0/",$4);print $4}' | head -1 | awk -F '/' '{print $2}')
   value=$(( 0xffffffff ^ ((1 << (32 - $SUBNET)) - 1) ))
   NETMASK="$(( (value >> 24) & 0xff )).$(( (value >> 16) & 0xff )).$(( (value >> 8) & 0xff )).$(( value & 0xff ))"
@@ -68,18 +68,18 @@ function SetNetwork() {
       cfgNum="$(find /etc/network/interfaces.d -name '*.cfg' |wc -l)" || cfgNum='0'
       [[ "$cfgNum" -ne '0' ]] && {
         for netConfig in `ls -1 /etc/network/interfaces.d/*.cfg`
-        do 
+        do
           [[ ! -z "$(cat $netConfig | sed -n '/iface.*inet static/p')" ]] && isAuto='1'
         done
       }
     }
   fi
-  
+
   if [[ -d '/etc/sysconfig/network-scripts' ]];then
     cfgNum="$(find /etc/network/interfaces.d -name '*.cfg' |wc -l)" || cfgNum='0'
     [[ "$cfgNum" -ne '0' ]] && {
       for netConfig in `ls -1 /etc/sysconfig/network-scripts/ifcfg-* | grep -v 'lo$' | grep -v ':[0-9]\{1,\}'`
-      do 
+      do
         [[ ! -z "$(cat $netConfig | sed -n '/BOOTPROTO.*[sS][tT][aA][tT][iI][cC]/p')" ]] && isAuto='1'
       done
     }
@@ -94,7 +94,7 @@ function NetMode() {
     case $input in
       [yY][eE][sS]|[yY]) NETSTR='' ;;
       [nN][oO]|[nN]) isAuto='1' ;;
-      *) clear; echo "Canceled by user!"; exit 1;;
+      *) NETSTR='' ;;
     esac
   fi
 
@@ -123,7 +123,7 @@ function NetMode() {
             exit 1
           }
         ;;
-        *) clear; echo "Canceled by user!"; exit 1;;
+        *) ;;
       esac
     fi
     NETSTR="--ip-addr ${MAINIP} --ip-gate ${GATEWAYIP} --ip-mask ${NETMASK}"
@@ -132,7 +132,7 @@ function NetMode() {
 
 function Start() {
   CopyRight
-  
+
   isCN='0'
   geoip=$(wget --no-check-certificate -qO- https://api.ip.sb/geoip -T 10 | grep "\"country_code\":\"CN\"")
   if [[ "$geoip" != "" ]];then
@@ -153,31 +153,31 @@ function Start() {
     rm -f /tmp/InstallNET.sh
   fi
   wget --no-check-certificate -qO /tmp/InstallNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/InstallNET.sh' && chmod a+x /tmp/InstallNET.sh
-  
+
   CMIRROR=''
   CVMIRROR=''
   DMIRROR=''
   UMIRROR=''
   if [[ "$isCN" == '1' ]];then
-    sed -i 's#https://github.com/ouyangmland/gdlink.sh/raw/master/wget_udeb_amd64.tar.gz#' /tmp/InstallNET.sh
     CMIRROR="--mirror http://mirrors.aliyun.com/centos/"
     CVMIRROR="--mirror http://mirrors.tuna.tsinghua.edu.cn/centos-vault/"
     DMIRROR="--mirror http://mirrors.aliyun.com/debian/"
     UMIRROR="--mirror http://mirrors.aliyun.com/ubuntu/"
   fi
-  
+
   sed -i 's/$1$4BJZaD0A$y1QykUnJ6mXprENfwpseH0/$1$7R4IuxQb$J8gcq7u9K0fNSsDNFEfr90/' /tmp/InstallNET.sh
-  sed -i '/force-efi-extra-removable/d' /tmp/InstallNET.sh
 
   echo -e "\nPlease select an OS:"
-  echo "  1) CentOS 7.7 (DD Image)"
-  echo "  2) CentOS 7.6 (ServerSpeeder Avaliable)"
+  echo "  1) CentOS 7.9 (DD Image)"
+  echo "  2) CentOS 7.6 (DD Image, ServerSpeeder Avaliable)"
   echo "  3) CentOS 6"
   echo "  4) Debian 9"
   echo "  5) Debian 10"
-  echo "  6) Ubuntu 16.04"
-  echo "  7) Ubuntu 18.04"
-  echo "  8) Custom image"
+  echo "  6) Debian 11"
+  echo "  7) Ubuntu 16.04"
+  echo "  8) Ubuntu 18.04"
+  echo "  9) Ubuntu 20.04"
+  echo "  10) Custom image"
   echo "  0) Exit"
   echo -ne "\nYour option: "
   read N
@@ -187,13 +187,15 @@ function Start() {
     3) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -c 6.10 -v 64 -a $NETSTR $CMIRROR ;;
     4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 9 -v 64 -a $NETSTR $DMIRROR ;;
     5) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 10 -v 64 -a $NETSTR $DMIRROR ;;
-    6) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 16.04 -v 64 -a $NETSTR $UMIRROR ;;
-    7) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 18.04 -v 64 -a $NETSTR $UMIRROR ;;
-    8)
+    6) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 11 -v 64 -a $NETSTR $DMIRROR ;;
+    7) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 16.04 -v 64 -a $NETSTR $UMIRROR ;;
+    8) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 18.04 -v 64 -a $NETSTR $UMIRROR ;;
+    9) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -u 20.04 -v 64 -a $NETSTR $UMIRROR ;;
+    10)
       echo -e "\n"
       read -r -p "Custom image URL: " imgURL
       echo -e "\n"
-      read -r -p "Are you sure start reinstall? [Y/n]: " input
+      read -r -p "Are you sure start reinstall? [y/N]: " input
       case $input in
         [yY][eE][sS]|[yY]) bash /tmp/InstallNET.sh $NETSTR -dd $imgURL $DMIRROR ;;
         *) clear; echo "Canceled by user!"; exit 1;;
