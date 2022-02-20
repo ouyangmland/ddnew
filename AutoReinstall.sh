@@ -7,6 +7,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 wget --no-check-certificate -qO /usr/local/bin/gdlink 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh' && chmod a+x /usr/local/bin/gdlink
 wget --no-check-certificate -qO DebianNET.sh 'https://raw.githubusercontent.com/ouyangmland/ddnew/master/DebianNET.sh' && chmod a+x DebianNET.sh
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1uzy_mkqQMHYCzylzf-AkbZxThj8eFUqr' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1uzy_mkqQMHYCzylzf-AkbZxThj8eFUqr" -O centos-7-image && rm -rf /tmp/cookies.txt
 function CopyRight() {
   clear
   echo "########################################################"
@@ -182,7 +183,7 @@ function Start() {
   echo -ne "\nYour option: "
   read N
   case $N in
-    1) echo -e "\nPassword: Pwd@CentOS\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -dd "$(echo "1uzy_mkqQMHYCzylzf-AkbZxThj8eFUqr" |xargs -n1 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh'))";;
+    1) echo -e "\nPassword: Pwd@CentOS\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -dd "centos-7-image";;
     2) echo -e "\nPassword: Pwd@CentOS\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -dd "$(echo "1O7kSrpyfhR4pLOT7O5R_HBi0vARgOn1G" |xargs -n1 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/ouyangmland/gdlink.sh/master/gdlink.sh'))";;
     3) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -c 6.10 -v 64 -a $NETSTR $CMIRROR ;;
     4) echo -e "\nPassword: Pwd@Linux\n"; read -s -n1 -p "Press any key to continue..." ; bash /tmp/InstallNET.sh -d 9 -v 64 -a $NETSTR $DMIRROR ;;
